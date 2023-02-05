@@ -1,1 +1,1 @@
-# multi-store-app-udem
+# multi-store-app-udemy
