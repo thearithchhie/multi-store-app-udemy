@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:multi_store_app/categories/beauty_category.dart';
+import 'package:multi_store_app/categories/kids_category.dart';
 import 'package:multi_store_app/utilities/categ_list.dart';
 import 'package:multi_store_app/widgets/fake_search.dart';
 
+import '../categories/accessories_category.dart';
+import '../categories/bags_category.dart';
+import '../categories/electronices_category.dart';
+import '../categories/home_garden_category.dart';
 import '../categories/men_category.dart';
+import '../categories/shoes_category.dart';
+import '../categories/women_category.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -21,6 +29,8 @@ List<ItemsData> items = <ItemsData>[
   ItemsData(label: 'electronics'),
   ItemsData(label: 'accessories'),
   ItemsData(label: 'home & garden'),
+  ItemsData(label: 'kids'),
+  ItemsData(label: 'beauty'),
 ];
 
 class _CategoryScreenState extends State<CategoryScreen> {
@@ -115,24 +125,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
         scrollDirection: Axis.vertical,
         children: [
           MenCategory(),
-          Center(
-            child: Text('women category'),
-          ),
-          Center(
-            child: Text('shoes category'),
-          ),
-          Center(
-            child: Text('bag category'),
-          ),
-          Center(
-            child: Text('electronic category'),
-          ),
-          Center(
-            child: Text('accessories category'),
-          ),
-          Center(
-            child: Text('home & garden category'),
-          )
+          const WomenCategory(),
+          const ShoesCategory(),
+          const BagsCategory(),
+          const ElectronicCategory(),
+          const AccessoriesCategory(),
+          const HomeGardenCategory(),
+          const  KidsCategory(),
+          const BeautyCategory(),
         ],
       ),
     );
