@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:multi_store_app/utilities/categ_list.dart';
 import 'package:multi_store_app/widgets/fake_search.dart';
 
+import '../categories/men_category.dart';
+
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);
 
@@ -22,9 +24,23 @@ List<ItemsData> items = <ItemsData>[
 ];
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  final PageController _pageController = PageController();
+
+  //* I use this when we tab to other page (reset to top page)
+  @override
+  void initState() {
+    super.initState();
+    for(var element in items) {
+      element.isSelected = false;
+    }
+    setState(() {
+      items[0].isSelected = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-  final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -50,37 +66,75 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget sideNavigator(Size size) {
     return SizedBox(
-              width: size.width * 0.2,
-              height: size.height * 0.8,
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: ((context, index){
-                  final data = items.elementAt(index);
-                  return GestureDetector(
-                    onTap: () {
-                      for(var element in items) {
-                        element.isSelected = false;
-                      }
-                      setState(() {
-                        data.isSelected = true;
-                      });
-                    },
-                    child: Container(
-                      color: data.isSelected == true ? Colors.white : Colors.grey.shade300,
-                      height: 100,
-                      child: Center(child: Text('${data.label}')),
-                    ),
-                  );
-                }),
-              ),
-            );
+      width: size.width * 0.2,
+      height: size.height * 0.8,
+      child: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: ((context, index) {
+          final data = items.elementAt(index);
+          return GestureDetector(
+            onTap: () {
+              // _pageController.jumpToPage(index);
+              _pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.bounceInOut);
+              // for(var element in items) {
+              //   element.isSelected = false;
+              // }
+              // setState(() {
+              //   data.isSelected = true;
+              // });
+            },
+            child: Container(
+              color:
+                  data.isSelected == true ? Colors.white : Colors.grey.shade300,
+              height: 100,
+              child: Center(child: Text('${data.label}')),
+            ),
+          );
+        }),
+      ),
+    );
   }
 
   Widget categoryView(Size size) {
     return Container(
-              width: size.width * 0.8,
-              height: size.height * 0.8,
-              color: Colors.white
-            );
+      width: size.width * 0.8,
+      height: size.height * 0.8,
+      color: Colors.white,
+      child: PageView(
+        controller: _pageController,
+        onPageChanged: (value) {
+          for (var element in items) {
+            element.isSelected = false;
+          }
+          setState(() {
+            items[value].isSelected = true;
+          });
+        },
+        scrollDirection: Axis.vertical,
+        children: [
+          MenCategory(),
+          Center(
+            child: Text('women category'),
+          ),
+          Center(
+            child: Text('shoes category'),
+          ),
+          Center(
+            child: Text('bag category'),
+          ),
+          Center(
+            child: Text('electronic category'),
+          ),
+          Center(
+            child: Text('accessories category'),
+          ),
+          Center(
+            child: Text('home & garden category'),
+          )
+        ],
+      ),
+    );
   }
 }
